@@ -1,0 +1,974 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: departments; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE departments (
+    id integer NOT NULL,
+    name character varying,
+    acronym character varying,
+    status boolean DEFAULT true,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE departments OWNER TO labmic;
+
+--
+-- Name: departments_id_seq; Type: SEQUENCE; Schema: public; Owner: labmic
+--
+
+CREATE SEQUENCE departments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE departments_id_seq OWNER TO labmic;
+
+--
+-- Name: departments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: labmic
+--
+
+ALTER SEQUENCE departments_id_seq OWNED BY departments.id;
+
+
+--
+-- Name: descriptions; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE descriptions (
+    id integer NOT NULL,
+    name character varying(255),
+    status boolean DEFAULT true,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE descriptions OWNER TO labmic;
+
+--
+-- Name: descriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: labmic
+--
+
+CREATE SEQUENCE descriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE descriptions_id_seq OWNER TO labmic;
+
+--
+-- Name: descriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: labmic
+--
+
+ALTER SEQUENCE descriptions_id_seq OWNED BY descriptions.id;
+
+
+--
+-- Name: equipments; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE equipments (
+    id integer NOT NULL,
+    value_id integer,
+    nature character varying(255),
+    name character varying(255),
+    unit character varying(255),
+    active boolean DEFAULT true,
+    status boolean DEFAULT true,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE equipments OWNER TO labmic;
+
+--
+-- Name: equipments_id_seq; Type: SEQUENCE; Schema: public; Owner: labmic
+--
+
+CREATE SEQUENCE equipments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE equipments_id_seq OWNER TO labmic;
+
+--
+-- Name: equipments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: labmic
+--
+
+ALTER SEQUENCE equipments_id_seq OWNED BY equipments.id;
+
+
+--
+-- Name: exams; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE exams (
+    id integer NOT NULL,
+    user_id integer,
+    technical_id integer,
+    sample_id integer,
+    equipment_id integer,
+    equipment_amount double precision DEFAULT 0.0,
+    amount integer,
+    status boolean DEFAULT true,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE exams OWNER TO labmic;
+
+--
+-- Name: exams_id_seq; Type: SEQUENCE; Schema: public; Owner: labmic
+--
+
+CREATE SEQUENCE exams_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE exams_id_seq OWNER TO labmic;
+
+--
+-- Name: exams_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: labmic
+--
+
+ALTER SEQUENCE exams_id_seq OWNED BY exams.id;
+
+
+--
+-- Name: institutions; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE institutions (
+    id integer NOT NULL,
+    name character varying(255),
+    acronym character varying(255),
+    number character varying(255),
+    address character varying(255),
+    status boolean DEFAULT true,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE institutions OWNER TO labmic;
+
+--
+-- Name: institutions_id_seq; Type: SEQUENCE; Schema: public; Owner: labmic
+--
+
+CREATE SEQUENCE institutions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE institutions_id_seq OWNER TO labmic;
+
+--
+-- Name: institutions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: labmic
+--
+
+ALTER SEQUENCE institutions_id_seq OWNED BY institutions.id;
+
+
+--
+-- Name: payments; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE payments (
+    id integer NOT NULL,
+    user_id integer,
+    exam_id integer,
+    value double precision DEFAULT 0.0,
+    name character varying(255),
+    status boolean DEFAULT true,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE payments OWNER TO labmic;
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: labmic
+--
+
+CREATE SEQUENCE payments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE payments_id_seq OWNER TO labmic;
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: labmic
+--
+
+ALTER SEQUENCE payments_id_seq OWNED BY payments.id;
+
+
+--
+-- Name: relationships; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE relationships (
+    id integer NOT NULL,
+    name character varying(255),
+    status boolean DEFAULT true,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE relationships OWNER TO labmic;
+
+--
+-- Name: relationships_id_seq; Type: SEQUENCE; Schema: public; Owner: labmic
+--
+
+CREATE SEQUENCE relationships_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE relationships_id_seq OWNER TO labmic;
+
+--
+-- Name: relationships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: labmic
+--
+
+ALTER SEQUENCE relationships_id_seq OWNED BY relationships.id;
+
+
+--
+-- Name: relationships_users; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE relationships_users (
+    user_id integer NOT NULL,
+    relationship_id integer NOT NULL
+);
+
+
+ALTER TABLE relationships_users OWNER TO labmic;
+
+--
+-- Name: samples; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE samples (
+    id integer NOT NULL,
+    user_id integer,
+    description_id integer,
+    status_id integer,
+    code character varying(255),
+    amount integer,
+    note character varying(255),
+    status boolean DEFAULT true,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE samples OWNER TO labmic;
+
+--
+-- Name: samples_id_seq; Type: SEQUENCE; Schema: public; Owner: labmic
+--
+
+CREATE SEQUENCE samples_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE samples_id_seq OWNER TO labmic;
+
+--
+-- Name: samples_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: labmic
+--
+
+ALTER SEQUENCE samples_id_seq OWNED BY samples.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE schema_migrations (
+    version character varying NOT NULL
+);
+
+
+ALTER TABLE schema_migrations OWNER TO labmic;
+
+--
+-- Name: statuses; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE statuses (
+    id integer NOT NULL,
+    name character varying(255),
+    status boolean DEFAULT true,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE statuses OWNER TO labmic;
+
+--
+-- Name: statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: labmic
+--
+
+CREATE SEQUENCE statuses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE statuses_id_seq OWNER TO labmic;
+
+--
+-- Name: statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: labmic
+--
+
+ALTER SEQUENCE statuses_id_seq OWNED BY statuses.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    institution_id integer,
+    department_id integer,
+    first_name character varying(255),
+    last_name character varying(255),
+    email character varying(255),
+    mobile character varying(255),
+    phone character varying(255),
+    phone_ext character varying(255),
+    social_number character varying(255),
+    note text,
+    technical boolean DEFAULT false,
+    status boolean DEFAULT true,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE users OWNER TO labmic;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: labmic
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_id_seq OWNER TO labmic;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: labmic
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: values; Type: TABLE; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE TABLE "values" (
+    id integer NOT NULL,
+    name character varying(255),
+    value double precision DEFAULT 0.0,
+    status boolean DEFAULT true,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE "values" OWNER TO labmic;
+
+--
+-- Name: values_id_seq; Type: SEQUENCE; Schema: public; Owner: labmic
+--
+
+CREATE SEQUENCE values_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE values_id_seq OWNER TO labmic;
+
+--
+-- Name: values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: labmic
+--
+
+ALTER SEQUENCE values_id_seq OWNED BY "values".id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: labmic
+--
+
+ALTER TABLE ONLY departments ALTER COLUMN id SET DEFAULT nextval('departments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: labmic
+--
+
+ALTER TABLE ONLY descriptions ALTER COLUMN id SET DEFAULT nextval('descriptions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: labmic
+--
+
+ALTER TABLE ONLY equipments ALTER COLUMN id SET DEFAULT nextval('equipments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: labmic
+--
+
+ALTER TABLE ONLY exams ALTER COLUMN id SET DEFAULT nextval('exams_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: labmic
+--
+
+ALTER TABLE ONLY institutions ALTER COLUMN id SET DEFAULT nextval('institutions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: labmic
+--
+
+ALTER TABLE ONLY payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: labmic
+--
+
+ALTER TABLE ONLY relationships ALTER COLUMN id SET DEFAULT nextval('relationships_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: labmic
+--
+
+ALTER TABLE ONLY samples ALTER COLUMN id SET DEFAULT nextval('samples_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: labmic
+--
+
+ALTER TABLE ONLY statuses ALTER COLUMN id SET DEFAULT nextval('statuses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: labmic
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: labmic
+--
+
+ALTER TABLE ONLY "values" ALTER COLUMN id SET DEFAULT nextval('values_id_seq'::regclass);
+
+
+--
+-- Data for Name: departments; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY departments (id, name, acronym, status, created_at, updated_at) FROM stdin;
+1	Instituto de Ciências Biológicas	ICB	t	2016-02-17 18:00:37.970049	2016-02-17 18:00:37.970049
+2	Instituto de Física	IF	t	2016-02-17 18:00:37.980705	2016-02-17 18:00:37.980705
+3	Centro de Recursos Computacionais	CERCOMP	t	2016-02-25 14:32:59.770208	2016-02-25 14:32:59.770208
+\.
+
+
+--
+-- Name: departments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: labmic
+--
+
+SELECT pg_catalog.setval('departments_id_seq', 3, true);
+
+
+--
+-- Data for Name: descriptions; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY descriptions (id, name, status, created_at, updated_at) FROM stdin;
+1	Líquido	t	2016-02-17 18:00:37.910605	2016-02-17 18:00:37.910605
+2	Sólido	t	2016-02-17 18:00:37.92254	2016-02-17 18:00:37.92254
+\.
+
+
+--
+-- Name: descriptions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: labmic
+--
+
+SELECT pg_catalog.setval('descriptions_id_seq', 2, true);
+
+
+--
+-- Data for Name: equipments; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY equipments (id, value_id, nature, name, unit, active, status, created_at, updated_at) FROM stdin;
+1	1	MET	Microscópio Eletrônico de Transmissão	horas	t	t	2016-02-17 18:00:37.888767	2016-02-17 18:00:37.888767
+2	2	MEV	Microscópio Eletrônico de Varredura	horas	t	t	2016-02-17 18:00:37.896695	2016-02-17 18:00:37.896695
+\.
+
+
+--
+-- Name: equipments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: labmic
+--
+
+SELECT pg_catalog.setval('equipments_id_seq', 2, true);
+
+
+--
+-- Data for Name: exams; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY exams (id, user_id, technical_id, sample_id, equipment_id, equipment_amount, amount, status, created_at, updated_at) FROM stdin;
+1	1	2	1	1	2	2	t	2016-02-17 18:00:38.120467	2016-02-17 18:00:38.120467
+2	1	2	1	2	3	3	t	2016-02-17 18:00:38.129838	2016-02-17 18:00:38.129838
+3	1	2	2	2	4	2	t	2016-02-17 18:00:38.138221	2016-02-17 18:00:38.138221
+\.
+
+
+--
+-- Name: exams_id_seq; Type: SEQUENCE SET; Schema: public; Owner: labmic
+--
+
+SELECT pg_catalog.setval('exams_id_seq', 3, true);
+
+
+--
+-- Data for Name: institutions; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY institutions (id, name, acronym, number, address, status, created_at, updated_at) FROM stdin;
+1	Universidade Federal de Goiás	UFG	11.111.111/1111-11	Campus 2	t	2016-02-17 18:00:37.995865	2016-02-17 18:00:37.995865
+2	Universidade Católica de Goiás	UCG	22.222.222/2222-22	Universitário	t	2016-02-17 18:00:38.005562	2016-02-17 18:00:38.005562
+\.
+
+
+--
+-- Name: institutions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: labmic
+--
+
+SELECT pg_catalog.setval('institutions_id_seq', 2, true);
+
+
+--
+-- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY payments (id, user_id, exam_id, value, name, status, created_at, updated_at) FROM stdin;
+1	3	\N	7	Recursos X	t	2016-02-17 18:00:38.152968	2016-02-17 18:00:38.152968
+2	3	2	3	Pagamento parcial	t	2016-02-17 18:00:38.163393	2016-02-17 18:00:38.163393
+3	3	1	2	Pagamento total	t	2016-02-17 18:00:38.171473	2016-02-17 18:00:38.171473
+4	3	\N	5	Recursos Y	t	2016-02-17 18:00:38.179762	2016-02-17 18:00:38.179762
+\.
+
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: labmic
+--
+
+SELECT pg_catalog.setval('payments_id_seq', 4, true);
+
+
+--
+-- Data for Name: relationships; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY relationships (id, name, status, created_at, updated_at) FROM stdin;
+1	Professor	t	2016-02-17 18:00:37.938093	2016-02-17 18:00:37.938093
+2	Aluno	t	2016-02-17 18:00:37.946741	2016-02-17 18:00:37.946741
+3	Pesquisador	t	2016-02-17 18:00:37.954981	2016-02-17 18:00:37.954981
+\.
+
+
+--
+-- Name: relationships_id_seq; Type: SEQUENCE SET; Schema: public; Owner: labmic
+--
+
+SELECT pg_catalog.setval('relationships_id_seq', 3, true);
+
+
+--
+-- Data for Name: relationships_users; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY relationships_users (user_id, relationship_id) FROM stdin;
+1	2
+2	3
+3	1
+4	1
+\.
+
+
+--
+-- Data for Name: samples; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY samples (id, user_id, description_id, status_id, code, amount, note, status, created_at, updated_at) FROM stdin;
+1	3	1	1	TOS1	2	Nanopartícula de ouro	t	2016-02-17 18:00:38.089178	2016-02-17 18:00:38.089178
+2	3	2	2	TOS2	3	Nanopartícula de prata	t	2016-02-17 18:00:38.096551	2016-02-17 18:00:38.096551
+\.
+
+
+--
+-- Name: samples_id_seq; Type: SEQUENCE SET; Schema: public; Owner: labmic
+--
+
+SELECT pg_catalog.setval('samples_id_seq', 2, true);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY schema_migrations (version) FROM stdin;
+20151016142628
+\.
+
+
+--
+-- Data for Name: statuses; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY statuses (id, name, status, created_at, updated_at) FROM stdin;
+1	Concluído	t	2016-02-17 18:00:37.838096	2016-02-17 18:00:37.838096
+2	Em andamento	t	2016-02-17 18:00:37.847079	2016-02-17 18:00:37.847079
+\.
+
+
+--
+-- Name: statuses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: labmic
+--
+
+SELECT pg_catalog.setval('statuses_id_seq', 2, true);
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY users (id, institution_id, department_id, first_name, last_name, email, mobile, phone, phone_ext, social_number, note, technical, status, created_at, updated_at) FROM stdin;
+1	1	1	Marcello	Moura	moura@ufg.br	(11)11111-1111	(11)11111-1111	x111	111.111.111-11		f	t	2016-02-17 18:00:38.046816	2016-02-17 18:00:38.046816
+2	2	1	Tatiane	Santos	santos@ufg.br	(22)22222-2222	(22)22222-2222	x222	222.222.222-22		t	t	2016-02-17 18:00:38.056741	2016-02-17 18:00:38.056741
+3	2	2	Jessiel	da Silva	silva@ufg.br	(33)33333-3333	(33)33333-3333	3333	333.333.333-33		f	t	2016-02-17 18:00:38.073264	2016-02-17 18:00:38.073264
+4	1	3	Ricardo	Borges	ricardoborges.ufg@gmail.com	(62) 9176-5675	(62) 91765-6758	1391	033.855.021-60	Teste de observação.	f	t	2016-02-25 14:33:11.921328	2016-02-25 16:24:21.331219
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: labmic
+--
+
+SELECT pg_catalog.setval('users_id_seq', 4, true);
+
+
+--
+-- Data for Name: values; Type: TABLE DATA; Schema: public; Owner: labmic
+--
+
+COPY "values" (id, name, value, status, created_at, updated_at) FROM stdin;
+1	Acadêmico	1	t	2016-02-17 18:00:37.863623	2016-02-17 18:00:37.863623
+2	Mercado	2	t	2016-02-17 18:00:37.872308	2016-02-17 18:00:37.872308
+\.
+
+
+--
+-- Name: values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: labmic
+--
+
+SELECT pg_catalog.setval('values_id_seq', 2, true);
+
+
+--
+-- Name: departments_pkey; Type: CONSTRAINT; Schema: public; Owner: labmic; Tablespace: 
+--
+
+ALTER TABLE ONLY departments
+    ADD CONSTRAINT departments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: descriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: labmic; Tablespace: 
+--
+
+ALTER TABLE ONLY descriptions
+    ADD CONSTRAINT descriptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: equipments_pkey; Type: CONSTRAINT; Schema: public; Owner: labmic; Tablespace: 
+--
+
+ALTER TABLE ONLY equipments
+    ADD CONSTRAINT equipments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: exams_pkey; Type: CONSTRAINT; Schema: public; Owner: labmic; Tablespace: 
+--
+
+ALTER TABLE ONLY exams
+    ADD CONSTRAINT exams_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: institutions_pkey; Type: CONSTRAINT; Schema: public; Owner: labmic; Tablespace: 
+--
+
+ALTER TABLE ONLY institutions
+    ADD CONSTRAINT institutions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: labmic; Tablespace: 
+--
+
+ALTER TABLE ONLY payments
+    ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: relationships_pkey; Type: CONSTRAINT; Schema: public; Owner: labmic; Tablespace: 
+--
+
+ALTER TABLE ONLY relationships
+    ADD CONSTRAINT relationships_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: samples_pkey; Type: CONSTRAINT; Schema: public; Owner: labmic; Tablespace: 
+--
+
+ALTER TABLE ONLY samples
+    ADD CONSTRAINT samples_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: labmic; Tablespace: 
+--
+
+ALTER TABLE ONLY statuses
+    ADD CONSTRAINT statuses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: labmic; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: values_pkey; Type: CONSTRAINT; Schema: public; Owner: labmic; Tablespace: 
+--
+
+ALTER TABLE ONLY "values"
+    ADD CONSTRAINT values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_equipments_on_value_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_equipments_on_value_id ON equipments USING btree (value_id);
+
+
+--
+-- Name: index_exams_on_equipment_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_exams_on_equipment_id ON exams USING btree (equipment_id);
+
+
+--
+-- Name: index_exams_on_technical_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_exams_on_technical_id ON exams USING btree (technical_id);
+
+
+--
+-- Name: index_exams_on_user_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_exams_on_user_id ON exams USING btree (user_id);
+
+
+--
+-- Name: index_payments_on_exam_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_payments_on_exam_id ON payments USING btree (exam_id);
+
+
+--
+-- Name: index_payments_on_user_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_payments_on_user_id ON payments USING btree (user_id);
+
+
+--
+-- Name: index_relationships_users_on_relationship_id_and_user_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_relationships_users_on_relationship_id_and_user_id ON relationships_users USING btree (relationship_id, user_id);
+
+
+--
+-- Name: index_relationships_users_on_user_id_and_relationship_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_relationships_users_on_user_id_and_relationship_id ON relationships_users USING btree (user_id, relationship_id);
+
+
+--
+-- Name: index_samples_on_description_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_samples_on_description_id ON samples USING btree (description_id);
+
+
+--
+-- Name: index_samples_on_status_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_samples_on_status_id ON samples USING btree (status_id);
+
+
+--
+-- Name: index_samples_on_user_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_samples_on_user_id ON samples USING btree (user_id);
+
+
+--
+-- Name: index_users_on_department_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_users_on_department_id ON users USING btree (department_id);
+
+
+--
+-- Name: index_users_on_institution_id; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE INDEX index_users_on_institution_id ON users USING btree (institution_id);
+
+
+--
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: labmic; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
